@@ -1,0 +1,16 @@
+@import "../../styles/variables";
+
+.main {
+  height: 100%;
+  box-sizing: border-box;
+  max-height: calc(100vh - 41px);
+}
+
+.container {
+  height: 100vh;
+  padding: 0 16px;
+}
+
+.dashboard {
+  width: 100%;
+}
