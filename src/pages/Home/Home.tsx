@@ -21,7 +21,7 @@ export const Home: FC<IProps> = (): JSX.Element => {
   const [ search, setSearch ] = useState<string | null>(null);
 
   useEffect(() => {
-    api.auctions.get({ params: { ...params, search, state: status } }).then(({ items, totalCount }) => {
+    api.auctions.get({ params: { ...params, title: search, state: status } }).then(({ items, totalCount }) => {
       setAuctions(items);
       setTotal(totalCount);
     });
@@ -29,7 +29,7 @@ export const Home: FC<IProps> = (): JSX.Element => {
 
   const onSearch = (val: any) => {
     setSearch(val);
-    api.auctions.get({ params: { ...params, search: val, state: status } })
+    api.auctions.get({ params: { ...params, title: val, state: status } })
       .then(({ items, totalCount }) => {
         setAuctions(items);
         setTotal(totalCount);

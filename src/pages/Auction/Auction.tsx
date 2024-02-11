@@ -1,9 +1,9 @@
 import { FC, useEffect, useState } from "react";
 import { System as SystemLayout } from "../../layouts";
 import { Avatar, Button, Card, Col, Descriptions, Divider, Flex, InputNumber, Row, Space, Statistic } from "antd";
-import { useApi } from "../../hooks";
+import { useApi, useAuthorization } from "../../hooks";
 import { IAuction, IBid, ILot, IMessage } from "../../models/auction";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import TextArea from "antd/es/input/TextArea";
 
 const { Meta } = Card;
@@ -141,6 +141,8 @@ export const Auction: FC<IProps> = (): JSX.Element => {
 };
 
 const Chat = ({ auctionId, disabled }: any) => {
+  const { isAuthorized } = useAuthorization();
+  const nav = useNavigate();
   const [ messages, setMessages ] = useState<IMessage[]>([]);
   const [ input, setInput ] = useState<string>("");
   // const [ centrifuge, setCentrifuge ] = useState<any>(null);
@@ -164,6 +166,11 @@ const Chat = ({ auctionId, disabled }: any) => {
   }, []);
 
   const sendMessage = () => {
+    if (!isAuthorized) {
+      nav("/sign-in");
+      return;
+    }
+
     if (input.trim() !== "") {
       api.message.send({ auctionId, text: input });
       setInput("");
@@ -203,6 +210,8 @@ const Chat = ({ auctionId, disabled }: any) => {
 };
 
 const Bids = ({ lotId, disabled, minPrice, minStep }: any) => {
+  const { isAuthorized } = useAuthorization();
+  const nav = useNavigate();
   const [ bids, setBids ] = useState<IBid[]>([]);
   // const [ centrifuge, setCentrifuge ] = useState<any>(null);
   const [ currentPrice, setCurrentPrice ] = useState<number>(minPrice);
@@ -236,11 +245,19 @@ const Bids = ({ lotId, disabled, minPrice, minStep }: any) => {
   };
 
   const sendBid = () => {
+    if (!isAuthorized) {
+      nav("/sign-in");
+      return;
+    }
     api.bids.send({ lotId, price: nextBid });
     setCurrentPrice(nextBid);
     getBids();
   };
   const sendCustomBid = () => {
+    if (!isAuthorized) {
+      nav("/sign-in");
+      return;
+    }
     if (customBid >= nextBid) {
       api.bids.send({ lotId, price: customBid });
       setCurrentPrice(customBid);
