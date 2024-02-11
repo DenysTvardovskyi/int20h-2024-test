@@ -5,7 +5,7 @@ import { AxiosRequestHeaders } from "axios";
 import { IUser } from "../models";
 import { IAuction, IBid, IMessage } from "../models/auction";
 
-const API_URL: string = import.meta.env.VITE_BASE_URL!;
+const API_URL: string = "https://jwp-team.com/backend/api";
 
 interface IApiConfig {
   loader?: boolean | string;
