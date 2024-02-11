@@ -4,6 +4,8 @@ WORKDIR /app
 
 COPY . .
 
+ENV VITE_BASE_URL=https://jwp-team.com/backend/api
+
 RUN npm install && npm run build
 
 FROM nginx:alpine AS runtime-env
