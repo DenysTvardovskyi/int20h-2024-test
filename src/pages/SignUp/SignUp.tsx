@@ -1,6 +1,6 @@
 import { FC } from "react";
-import { Link } from "react-router-dom";
-import { useApi, useAuthorization } from "../../hooks";
+import { Link, useNavigate } from "react-router-dom";
+import { useApi, useAuthorization, useNotification } from "../../hooks";
 import { System as SystemLayout } from "../../layouts";
 import { Button, Checkbox, Form, Input } from "antd";
 import Title from "antd/es/typography/Title";
@@ -13,6 +13,8 @@ export const SignUp: FC<IProps> = (): JSX.Element => {
   const api = useApi();
   const { t } = useTranslation();
   const { isAuthorized } = useAuthorization();
+  const nav = useNavigate();
+  const notification = useNotification();
 
   const onFinish = (values: any) => {
     api.authorization.signUp({
@@ -21,7 +23,8 @@ export const SignUp: FC<IProps> = (): JSX.Element => {
       email: values.email,
       loader: t("loader.loader.title"),
     }).then(() => {
-      console.log("sign up");
+      notification.success("User created! Please sign in to continue!");
+      nav("/sign-in");
     });
   };
 
